@@ -38,12 +38,19 @@ export default async function handler(
       },
     );
 
+    //similariy search using vectorstore
+    const similarDocs = await vectorStore.similaritySearch(
+      sanitizedQuestion,
+      10,
+    );
+
     //create chain
     const chain = makeChain(vectorStore);
-    //Ask a question using chat history
+
+    //Ask a question using input documents
     const response = await chain.call({
+      input_documents: similarDocs,
       question: sanitizedQuestion,
-      chat_history: history || [],
     });
 
     console.log('response', response);

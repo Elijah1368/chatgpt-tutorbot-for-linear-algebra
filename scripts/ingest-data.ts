@@ -26,7 +26,7 @@ export const run = async () => {
     });
 
     const docs = await textSplitter.splitDocuments(rawDocs);
-    console.log('split docs', docs);
+    console.log('doc count:', docs.length);
 
     console.log('creating vector store...');
     /*create and store the embeddings in the vectorStore*/
