@@ -41,7 +41,7 @@ export default async function handler(
     //similariy search using vectorstore
     const similarDocs = await vectorStore.similaritySearch(
       sanitizedQuestion,
-      10,
+      5,
     );
 
     //create chain
