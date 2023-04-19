@@ -5,6 +5,7 @@ import { pinecone } from '@/utils/pinecone-client';
 import { CustomPDFLoader } from '@/utils/customPDFLoader';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
 import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
+import * as fs from 'fs/promises';
 
 /* Name of directory to retrieve your files from */
 const filePath = 'docs';
@@ -26,6 +27,9 @@ export const run = async () => {
     });
 
     const docs = await textSplitter.splitDocuments(rawDocs);
+    const json = JSON.stringify(Array.from(docs.entries()));
+    await fs.writeFile('test.json', json);
+
     console.log('doc count:', docs.length);
 
     console.log('creating vector store...');

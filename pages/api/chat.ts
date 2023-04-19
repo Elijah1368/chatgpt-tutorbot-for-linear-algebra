@@ -49,7 +49,7 @@ export default async function handler(
 
     //Ask a question using input documents
     const response = await chain.call({
-      input_documents: similarDocs,
+      chat_history: history || [],
       question: sanitizedQuestion,
     });
 

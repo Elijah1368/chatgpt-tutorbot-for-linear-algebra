@@ -26,15 +26,15 @@ export const makeChain = (vectorstore: PineconeStore) => {
     modelName: 'gpt-3.5-turbo', //change this to gpt-4 if you have access
   });
 
-  const chain = loadQAMapReduceChain(model);
-  // const chain = ConversationalRetrievalQAChain.fromLLM(
-  //   model,
-  //   vectorstore.asRetriever(),
-  //   {
-  //     qaTemplate: QA_PROMPT,
-  //     questionGeneratorTemplate: CONDENSE_PROMPT,
-  //     returnSourceDocuments: true, //The number of source documents returned is 4 by default
-  //   },
-  // );
+  // const chain = loadQAMapReduceChain(model);
+  const chain = ConversationalRetrievalQAChain.fromLLM(
+    model,
+    vectorstore.asRetriever(),
+    {
+      qaTemplate: QA_PROMPT,
+      questionGeneratorTemplate: CONDENSE_PROMPT,
+      returnSourceDocuments: true, //The number of source documents returned is 4 by default
+    },
+  );
   return chain;
 };
