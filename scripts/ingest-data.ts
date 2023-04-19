@@ -3,7 +3,12 @@ import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { PineconeStore } from 'langchain/vectorstores/pinecone';
 import { pinecone } from '@/utils/pinecone-client';
 import { CustomPDFLoader } from '@/utils/customPDFLoader';
-import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
+import path from 'path';
+import {
+  PINECONE_INDEX_NAME,
+  PINECONE_NAME_SPACE,
+  PINECONE_TEST_NAME_SPACE,
+} from '@/config/pinecone';
 import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
 import * as fs from 'fs/promises';
 
@@ -30,6 +35,11 @@ export const run = async () => {
     const json = JSON.stringify(Array.from(docs.entries()));
     await fs.writeFile('test.json', json);
 
+    let directory = path.dirname(docs[2].metadata.source);
+    const splitPath = directory.split(path.sep);
+    console.log(splitPath[splitPath.length - 1]);
+
+    //const namespace = path.basename(docs[0].metadata.source);
     console.log('doc count:', docs.length);
 
     console.log('creating vector store...');
@@ -38,11 +48,23 @@ export const run = async () => {
     const index = pinecone.Index(PINECONE_INDEX_NAME); //change to your own index name
 
     //embed the PDF documents
-    await PineconeStore.fromDocuments(docs, embeddings, {
-      pineconeIndex: index,
-      namespace: PINECONE_NAME_SPACE,
-      textKey: 'text',
-    });
+    // await PineconeStore.fromDocuments(docs, embeddings, {
+    //   pineconeIndex: index,
+    //   namespace: PINECONE_NAME_SPACE,
+    //   textKey: 'text',
+    // });
+
+    // const splitDocs = docs;
+    // const upsertChunkSize = 50;
+    // for (let i = 0; i < splitDocs.length; i += upsertChunkSize) {
+    //   const chunk = splitDocs.slice(i, i + upsertChunkSize);
+    //   console.log('chunk', i, chunk);
+    //   await PineconeStore.fromDocuments(chunk, embeddings, {
+    //     pineconeIndex: index,
+    //     namespace: PINECONE_TEST_NAME_SPACE,
+    //     textKey: 'text',
+    //   });
+    // }
   } catch (error) {
     console.log('error', error);
     throw new Error('Failed to ingest your data');
