@@ -7,7 +7,7 @@
 /docs
 # testing
 /coverage
-
+/tests
 /test.json
 # next.js
 /.next/
