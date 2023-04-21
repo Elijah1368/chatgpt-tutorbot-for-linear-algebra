@@ -24,7 +24,7 @@ export const run = async () => {
 
     // const loader = new PDFLoader(filePath);
     const rawDocs = await directoryLoader.load();
-
+    console.log(rawDocs);
     /* Split text into chunks */
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: 1000,
@@ -37,7 +37,9 @@ export const run = async () => {
 
     let directory = path.dirname(docs[2].metadata.source);
     const splitPath = directory.split(path.sep);
-    console.log(splitPath[splitPath.length - 1]);
+    const namespace = splitPath[splitPath.length - 1];
+
+    console.log('namespace: ', namespace);
 
     //const namespace = path.basename(docs[0].metadata.source);
     console.log('doc count:', docs.length);
